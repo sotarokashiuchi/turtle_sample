@@ -1,5 +1,11 @@
 # turtle_sample2
 
+## 概要
+
+## デバッグコマンド
+
+## フォルダ構成
+
 ## パッケージ作成
 > ros2 pkg create <パッケージ名> --build-type <ビルドタイプ> --dependencies <依存パッケージ>
 
@@ -24,4 +30,4 @@
 1. turtle_publish
 2. turtle_subscribe
 3. turtle_client
-4. turtle_control
+4. turtle_launch
