@@ -1,35 +1,41 @@
 #include <rclcpp/rclcpp.hpp>
 #include <geometry_msgs/msg/twist.hpp>
 
+// 時間リテラルを使えるようにする
+using namespace std::chrono_literals;
+
+// cmd_velをpublishするノードのクラスを作成
+class publish_cmd_vel : public rclcpp::Node{
+    public:
+        // コンストラクタ：ノード名を"turtle_publish_node"に設定
+        publish_cmd_vel() : Node("turtle_publish_node"){
+            // 送信するTopic名，変数の型を設定
+            publicher_ = this->create_publisher<geometry_msgs::msg::Twist>("turtle1/cmd_vel", 10);
+            
+            // 2秒ごとにコールバック関数( {}内に記述 )を呼び出す
+            timer_ = this->create_wall_timer(2s, [this](){
+                // 変数を定義して，値を設定
+                auto message = geometry_msgs::msg::Twist();
+                message.linear.x = 1.0;
+                message.angular.z = 0.5;
+
+                // publishする
+                publicher_->publish(message);
+            });
+        }
+    
+    private:
+        rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr publicher_;
+        rclcpp::TimerBase::SharedPtr timer_;
+};
+
 int main(int argc, char **argv){
-    // Initialize the ROS2
+    // ROS2の初期化
     rclcpp::init(argc, argv);
 
-    // Create a node
-    auto node = rclcpp::Node::make_shared("turtle_publish");
+    rclcpp::spin(std::make_shared<publish_cmd_vel>());
 
-    // Create a publisher
-    auto pub_twist = node->create_publisher<geometry_msgs::msg::Twist>("turtle1/cmd_vel", 10);
-
-    // Create a timer to publish messages at a fixed rate
-    rclcpp::WallRate loop(0.5); // 2Hz
-
-    while(rclcpp::ok()){
-        // Create a message
-        auto msg = geometry_msgs::msg::Twist();
-        msg.linear.x = 1.0;
-        msg.angular.z = 1.0;
-
-        // Display the message in the console
-        RCLCPP_INFO(node->get_logger(), "Publishing: '%f'", msg.linear.x);
-
-        // Publish the message
-        pub_twist->publish(msg);
-
-        // Spin the node to process callbacks
-        loop.sleep();
-    }
-
+    // 終了処理
     rclcpp::shutdown();
     return 0;
 }
