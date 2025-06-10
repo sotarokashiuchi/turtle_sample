@@ -13,6 +13,12 @@ def generate_launch_description():
 
     return LaunchDescription([
         Node(
+            package='turtlesim',
+            executable='turtlesim_node',
+            name='turtlesim_node'
+        ),
+        
+        Node(
             package='turtle_control',
             executable='turtle_control',
             name='turtle_control',

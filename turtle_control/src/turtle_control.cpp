@@ -37,19 +37,25 @@ class Node_Class : public rclcpp::Node{
             timer_param = this->create_wall_timer(
                 5s, std::bind(&Node_Class::timer_param_callback, this)
             );
+
+            // サービスクライアントの初期化
+            client_reset_ = this->create_client<std_srvs::srv::Empty>("reset");
+
+            // サービスの呼び出し
+            call_reset_service();
         }
     
     private:
         // メンバ変数の定義
         rclcpp::Subscription<turtlesim::msg::Pose>::SharedPtr subscriber_;
         rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr publisher_;
+        rclcpp::Client<std_srvs::srv::Empty>::SharedPtr client_reset_;
         rclcpp::TimerBase::SharedPtr timer_pub;
         rclcpp::TimerBase::SharedPtr timer_param;
+        turtlesim::msg::Pose pose;
         double Kp;
         double ref_x;
         double ref_y;
-
-        turtlesim::msg::Pose pose;
 
         void timer_pub_callback(){
             auto message = geometry_msgs::msg::Twist();
@@ -68,7 +74,15 @@ class Node_Class : public rclcpp::Node{
             Kp = this->get_parameter("Kp").as_double();
             ref_x = this->get_parameter("ref_x").as_double();
             ref_y = this->get_parameter("ref_y").as_double();
-        }   
+        }
+
+        // サービス呼び出し関数
+        void call_reset_service(){
+            auto request = std::make_shared<std_srvs::srv::Empty::Request>();
+
+            // サービスのリクエストを送信
+            auto result = client_reset_->async_send_request(request);
+        }
 };
 
 int main(int argc, char **argv){
@@ -77,28 +91,6 @@ int main(int argc, char **argv){
 
     // ノードを作成
     auto node = std::make_shared<Node_Class>();
-
-    // サービスクライアントの作成
-    rclcpp::Client<std_srvs::srv::Empty>::SharedPtr client_reset =
-        node->create_client<std_srvs::srv::Empty>("reset");
-    auto request = std::make_shared<std_srvs::srv::Empty::Request>();
-
-    // サービス起動確認
-    while((!client_reset->wait_for_service(1s))){
-        if (!rclcpp::ok()){
-            RCLCPP_ERROR(node->get_logger(), "Interrupted while waiting for the service. Exiting.");
-            return 0;
-        }
-        RCLCPP_INFO(node->get_logger(), "Service not available, waiting again...");
-    }
-
-    // サービスのリクエストを送信
-    auto result = client_reset->async_send_request(request);
-
-    // サービスのリクエストが完了するまで待機
-    if(rclcpp::spin_until_future_complete(node, result) == rclcpp::FutureReturnCode::SUCCESS){
-        RCLCPP_INFO(node->get_logger(), "Service \"/reset\" succeeded");
-    }
 
     // ノードをspinする
     rclcpp::spin(node);
