@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8)
-project(turtle_publish)
+project(turtle_client)
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
@@ -11,17 +11,17 @@ find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(turtlesim REQUIRED)
+find_package(std_srvs REQUIRED)
 
-add_executable(turtle_publish src/turtle_publish.cpp)
-ament_target_dependencies(turtle_publish
+add_executable(turtle_client src/turtle_client.cpp)
+ament_target_dependencies(turtle_client
   rclcpp
-  std_msgs
   geometry_msgs
   turtlesim
+  std_srvs
 )
-
 install(TARGETS
-  turtle_publish
+  turtle_client
   DESTINATION lib/${PROJECT_NAME}
 )
 

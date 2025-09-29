@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8)
-project(turtle_publish)
+project(turtle_subscribe)
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
@@ -8,22 +8,20 @@ endif()
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
-find_package(std_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(turtlesim REQUIRED)
 
-add_executable(turtle_publish src/turtle_publish.cpp)
-ament_target_dependencies(turtle_publish
+add_executable(turtle_subscribe src/turtle_subscribe.cpp)
+ament_target_dependencies(turtle_subscribe
   rclcpp
-  std_msgs
   geometry_msgs
   turtlesim
 )
-
 install(TARGETS
-  turtle_publish
+  turtle_subscribe
   DESTINATION lib/${PROJECT_NAME}
 )
+
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
