@@ -3,17 +3,13 @@
 #include <turtlesim/msg/pose.hpp>
 #include <turtlesim/srv/set_pen.hpp>
 
-// #define Kp      0.2
-// #define ref_x   3.0
-// #define ref_y   3.0
-
 // 時間リテラルを使えるようにする
 using namespace std::chrono_literals;
 
 class Node_Class : public rclcpp::Node{
     public:
         // コンストラクタ
-        Node_Class() : Node("turtle_control"){
+        Node_Class() : Node("turtle_parameter"){
             // turtle1/cmd_velへgeometry_msgs::msg::Twist型の信号を送信するPublisherを作成
             publisher_ = this->create_publisher<geometry_msgs::msg::Twist>(
                 "turtle1/cmd_vel", 10

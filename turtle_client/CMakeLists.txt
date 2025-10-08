@@ -11,18 +11,20 @@ find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(turtlesim REQUIRED)
-find_package(std_srvs REQUIRED)
 
 add_executable(turtle_client src/turtle_client.cpp)
 ament_target_dependencies(turtle_client
   rclcpp
   geometry_msgs
   turtlesim
-  std_srvs
 )
 install(TARGETS
   turtle_client
   DESTINATION lib/${PROJECT_NAME}
+)
+install(DIRECTORY
+  launch
+  DESTINATION share/${PROJECT_NAME}/
 )
 
 if(BUILD_TESTING)

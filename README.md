@@ -44,7 +44,7 @@ turtle_practiceパッケージを作成して，パッケージ確認順に沿�
 1. turtle_publish
 2. turtle_subscribe
 3. turtle_client
-4. turtle_control
+4. turtle_parameter
 
 ## デバッグコマンド
 ### Node関係
@@ -92,6 +92,13 @@ turtle_practiceパッケージを作成して，パッケージ確認順に沿�
 
     例：
     > ros2 param dump /turtle_control > ~/turtle_ws/wrc/turtle_sample2/turtle_control/config/params.yaml
+
+### 通信の型関係
+* 通信の型に含まれる変数の確認
+    > ros2 interface show <通信の型>　
+
+    例：
+    > ros2 interface show geometry_msgs/msg/Twist
 
 ## フォルダ構成
 ~/turtle_ws     
