@@ -10,19 +10,22 @@ find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
-find_package(turtlesim REQUIRED)
 
 add_executable(turtle_publish src/turtle_publish.cpp)
 ament_target_dependencies(turtle_publish
   rclcpp
   std_msgs
   geometry_msgs
-  turtlesim
 )
 
 install(TARGETS
   turtle_publish
   DESTINATION lib/${PROJECT_NAME}
+)
+
+install(DIRECTORY
+  launch
+  DESTINATION share/${PROJECT_NAME}/
 )
 
 if(BUILD_TESTING)
