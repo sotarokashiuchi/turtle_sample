@@ -2,7 +2,7 @@
 
 ## 概要
 ROS2学習のためのturtlesimを用いたサンプルプログラム．
-turtle_practiceパッケージを作成して，パッケージ確認順に沿って編集していくことでTopic(publish,subscrive)，launch，Service(client), Parameterの順で学べる
+turtle_practiceパッケージを作成して，パッケージ確認順に沿って編集していくことでLaunch，Topic(publish,subscrive)，Service(client), Parameterの順で学べる
 
 ## ワークスペース作成
 > mkdir -p ~/<ワークスペース名>/src     
