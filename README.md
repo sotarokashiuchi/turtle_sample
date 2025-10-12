@@ -2,7 +2,7 @@
 
 ## 概要
 ROS2学習のためのturtlesimを用いたサンプルプログラム．
-turtle_practiceパッケージを作成して，パッケージ確認順に沿って編集していくことでTopic(publish,subscrive)，Service(client), Parameter, launchの順で学べる
+turtle_practiceパッケージを作成して，パッケージ確認順に沿って編集していくことでLaunch，Topic(publish,subscrive)，Service(client), Parameterの順で学べる
 
 # 座学
 
@@ -96,6 +96,15 @@ ros2 param dump <node名> > <保存ファイルへのパス>　
 ros2 param dump /turtle_control > ~/turtle_ws/wrc/turtle_sample2/turtle_control/config/params.yaml
 ```
 
+### 通信の型関係
+```sh
+# 通信の型に含まれる変数の確認
+ros2 interface show <通信の型>　
+
+# 例
+ros2 interface show geometry_msgs/msg/Twist
+```
+
 ## 参考
 - https://docs.ros.org/en/foxy/Tutorials.html
 - https://docs.ros.org/en/foxy/index.html
@@ -126,7 +135,7 @@ ros2 param dump /turtle_control > ~/turtle_ws/wrc/turtle_sample2/turtle_control/
 1. turtle_publish
 2. turtle_subscribe
 3. turtle_client
-4. turtle_control
+4. turtle_parameter
 
 ## サンプルコードの実行方法
 ```sh

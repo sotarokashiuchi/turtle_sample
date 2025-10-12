@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+    <!-- okb_turtleを各自の名前空間に変更 -->
+    <arg name="namespace" default="okb_turtle"/>
+
+    <arg name="Kp" default="0.2"/>
+    <arg name="ref_x" default="8.0"/>
+    <arg name="ref_y" default="1.0"/>
+
+    <group>
+        <push-ros-namespace namespace="$(var namespace)"/>
+
+        <node pkg="turtlesim" exec="turtlesim_node" name="turtlesim_node" output="screen"/>
+
+        <node pkg="turtle_parameter" exec="turtle_parameter" name="turtle_parameter" output="screen">
+            <param name="Kp" value="$(var Kp)"/>
+            <param name="ref_x" value="$(var ref_x)"/>
+            <param name="ref_y" value="$(var ref_y)"/>
+        </node>
+    </group>
+</launch>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+    <!-- okb_turtleを各自の名前空間に変更 -->
+    <arg name="namespace" default="okb_turtle"/>
+
+    <group>
+        <push-ros-namespace namespace="$(var namespace)"/>
+
+        <node pkg="turtlesim" exec="turtlesim_node" name="turtlesim_node" output="screen"/>
+        <node pkg="turtle_client" exec="turtle_client" name="turtle_client" output="screen"/>
+    </group>
+</launch>
