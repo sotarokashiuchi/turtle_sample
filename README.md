@@ -6,7 +6,7 @@ turtle_practiceパッケージを作成して，パッケージ確認順に沿�
 
 # 座学
 
-## ROS2概要
+## Nodeと様々な通信方法
 ### Node
 ![Node](https://docs.ros.org/en/kilted/_images/Nodes-TopicandService.gif)
 - 1つのノードには、複数の通信を実装できる
@@ -31,6 +31,73 @@ turtle_practiceパッケージを作成して，パッケージ確認順に沿�
 
 ### Action
 ![ACTION](https://docs.ros.org/en/foxy/_images/Action-SingleActionClient.gif)
+
+## 通信範囲
+- ROS2では同じネットワーク内のROSノードと自動的に通信可能
+- 同じネットワーク内で複数のROSプロジェクトが動作する場合はROSプロジェクトごとにROS_DOMAIN_IDを設定する必要がある
+- ROS_DOMAIN_IDは0-101の中から選択すればよい
+
+```sh
+echo "export ROS_DOMAIN_ID=<your_domain_id>" >> ~/.bashrc
+```
+
+- ローカルホスト内でROSプロジェクトが完結している場合は、ROS_LOCALHOST_ONLYを1に設定すればよい
+- Iron以降のROSでは、ROS_AUTOMATIC_DISCOVERY_RANGEで設定可能
+- https://docs.ros.org/en/jazzy/Tutorials/Advanced/Improved-Dynamic-Discovery.html
+```sh
+echo "export ROS_LOCALHOST_ONLY=1" >> ~/.bashrc
+```
+
+## namespace
+```sh
+/
+├── turtle1
+│   ├── controller (node)
+│   │   ├── speed (parameter)
+│   │   ├── pid.kp (parameter)
+│   │   └── pid.kd (parameter)
+│   └── cmd_vel (topic)
+└── turtle2
+    ├── controller (node)
+    └── cmd_vel (topic)
+```
+
+- ノード、トピック、サービス、アクション、パラメータは階層構造で管理されている
+  - パラメータは必ずノードの配下に存在する
+  - パラメータ名前空間(parameter namespace)は`.`で区切る
+- 完全修飾名(Fully Qualified Names)とは、絶対指定したもので、一意に特定できる
+  - 完全修飾ノード名
+  - 完全修飾トピック名
+  - 完全修飾アクション名
+  - 完全修飾サービス名
+- 指定方法
+  - 絶対指定
+    - `/`で始まる
+    - `~`または`{}`を含んではいけない
+  - 相対指定
+    - `/`と`~`以外で始まる
+    - トピック、サービス、アクションが、相対指定の場合、ノードの名前空間直下に作られる
+- 特殊な記号
+  - `~`
+    - プライベート名前空間置換文字(Private Namespace Substitution Character)
+    - 完全修飾ノード名を表す(ノードの名前空間/ノード名)
+  - `{}`
+    - 置換(Substitutions)
+    - `{node}`現在のノード名に置換される
+    - `{ns}`現在のネームスペースに置換される
+- ノードは相対指定でしか、表現できない
+  - ノードの名前空間を操作する方法
+    - Nodeコンストラクタの第2引数に指定
+    - launchファイルから指定
+
+
+| 識別名       | 絶対指定 | 相対指定 | プライベート名前空間置換 |
+| :----------- | :------- | :------- | :----------------------- |
+| ノード名     | X        | O        | X                        |
+| トピック名   | O        | O        | O                        |
+| サービス名   | O        | O        | O                        |
+| アクション名 | O        | O        | O                        |
+
 
 ## パッケージ作成までのコマンド
 ```sh
