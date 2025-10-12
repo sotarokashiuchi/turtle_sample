@@ -7,13 +7,27 @@ turtle_practiceパッケージを作成して，パッケージ確認順に沿�
 # 座学
 
 ## ROS2概要
+### Node
+![Node](https://docs.ros.org/en/kilted/_images/Nodes-TopicandService.gif)
+- 1つのノードには、複数の通信を実装できる
+
 ### Topic
 ![TOPIC](https://docs.ros.org/en/foxy/_images/Topic-MultiplePublisherandMultipleSubscriber.gif)
+- publisherとsubscriberが、トピックを通じで通信を行う
+- publisher-subscriber model
+- `rqt_graph`で表示させることができる
+- publisherはよくtimerで定期送信される
 
 ### Service
 ![SERVICE](https://docs.ros.org/en/foxy/_images/Service-MultipleServiceClient.gif)
+- service(serverの方が表現が適切だと思う)とclientがサービスを通じて通信を行う
+- call-and-response model
+- `rqt_graph`で表示させることができない
 
 ### Parameter
+- パラメータは各ノードが保持している値のこと
+- 各ノードの設定を行うための値を持たせることが多い
+- コマンドからパラメータを操作可能だが、その場合はコールバックで呼ぶ必要あり
 
 ### Action
 ![ACTION](https://docs.ros.org/en/foxy/_images/Action-SingleActionClient.gif)
