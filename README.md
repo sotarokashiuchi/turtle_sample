@@ -256,3 +256,70 @@ shell-1> ros2 run turtle_publish turtle_publish
 shell-2> source install/setup.bash
 shell-2> ros2 run turtlesim turtlesim_node
 ```
+
+## サンプルコードの解説
+### 1.turtle_publish
+![](./_attachments/sample_publish.png)
+- `turtle1/cmd_vel`トピックにTwistメッセージを送ると、カメの速度を設定できる
+- `Twist.linear.x`の値は、カメから見て前後の速度を表す
+- `Twist.linear.y`の値は、カメから見て左右の速度を表す
+- `Twist.angular.z`の値は、回転方向の速度を表す
+- 2次元なので、上記以外の座標軸に値を設定しても無視される
+
+geometry_msgs::msg::Twist
+```msg
+# 並進速度(x, yのみ有効)
+geometry_msgs::msg::Vector3 linear;
+# 角速度(zのみ有効)
+geometry_msgs::msg::Vector3 angular;
+```
+
+geometry_msgs::msg::Vector3
+```msg
+float64 x
+float64 y
+float64 z
+```
+
+### 2.turtle_subscribe
+![](./_attachments/sample_subscribe.png)
+- `turtle1/pose`トピックのPoseメッセージから、カメの位置情報, 速度情報を受け取ることができる
+- この情報を用いて、目標の位置(ref_x, ref_y)に対してP制御(ゲインKp)を行っている
+
+turtlesim::msg::Pose
+```msg
+# カメのx座標
+float32 x
+# カメのy座標
+float32 y
+# カメの角度(rad)
+float32 theta
+
+# 並進速度
+float32 linear_velocity
+# 角速度
+float32 angular_velocity
+```
+
+### 3.turtle_client
+- `turtle1/set_pen`サービスにSetPenメッセージを送ると、カメが通った後にできる線の色、幅、線の有無を設定できる
+
+turtlesim::srv::SetPen
+```srv
+# 線の色(RGB)
+uint8 r
+uint8 g
+uint8 b
+# 線の幅
+uint8 width
+# 線の有無(0:線あり, 1:線なし)
+uint8 off
+---
+```
+
+### 4.turtle_parameter
+- パラメータの値を指定して起動することができる
+- サンプルプログラムでは、`Kp`, `ref_x`, `ref_y`を指定できる
+```sh
+ros2 run <パッケージ名> <ノード実行ファイル名> --ros-args -p <パラメータ名>:=<値>
+```
