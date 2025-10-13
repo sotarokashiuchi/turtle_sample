@@ -98,6 +98,68 @@ echo "export ROS_LOCALHOST_ONLY=1" >> ~/.bashrc
 | サービス名   | O        | O        | O                        |
 | アクション名 | O        | O        | O                        |
 
+https://design.ros2.org/articles/topic_and_service_names.html
+
+## Executor
+- Executorは実行を管理する
+- イベントや受信メッセージに応じて、subscriptions, timers, service servers, action serversなどのコールバック関数を呼び出す
+- イベントや受信メッセージのキューはクライアントライブラリ層ではなく、ミドルウェア層で格納される
+- 3種類存在する
+  - Single-ThreadedExecutor
+    - 1Executorは1スレッドである
+    - 複数のノードを追加した場合でも、1スレッドで処理される
+  - Multi-ThreadedExecutor
+    - 1Executorは複数スレッドである
+    - 複数のノードを追加した場合は、コールバックグループごとに並列処理される
+    - またReentrantのコールバックグループ内も可能であれば並列処理される
+  - StaticSingle-ThreadedExecutor(非推奨)
+- spin()は以下のように内部でExecutorが呼び出されている
+
+```cpp
+int main(int argc, char* argv[])
+{
+  // Some initialization.
+  rclcpp::init(argc, argv);
+  ...
+
+  // Instantiate a node.
+  rclcpp::Node::SharedPtr node = ...
+
+  // Run the executor.
+  rclcpp::spin(node);
+
+  // Shutdown and exit.
+  ...
+  return 0;
+}
+```
+
+```cpp
+// spin(node)は以下のコードが展開されるのと等価
+rclcpp::executors::SingleThreadedExecutor executor;
+executor.add_node(node);
+executor.spin();
+```
+- 複数のノードを`add_node(node)`を使用して追加可能
+- SingleThreadedExecutorならnode同士でも並列処理されない
+
+### コールバックグループ
+- コールバックグループとは、ノード内のコールバックを分類するためのもの
+- 2種類ある
+  - Mutually exclusive: 同じグループ内の並列処理ができない
+  - Reentrant: 同じグループ内の並列処理ができる
+- コールバックグループはデフォルトでは、`Node.default_callback_group`が割り当てられている
+```cpp
+my_callback_group = create_callback_group(rclcpp::CallbackGroupType::MutuallyExclusive);
+
+rclcpp::SubscriptionOptions options;
+options.callback_group = my_callback_group;
+
+my_subscription = create_subscription<Int32>("/topic", clcpp::SensorDataQoS(), callback, options);
+```
+
+https://docs.ros.org/en/jazzy/Concepts/Intermediate/About-Executors.html
+https://docs.ros.org/en/jazzy/How-To-Guides/Using-callback-groups.html
 
 ## パッケージ作成までのコマンド
 ```sh
