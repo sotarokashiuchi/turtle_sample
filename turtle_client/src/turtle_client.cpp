@@ -3,10 +3,6 @@
 #include <turtlesim/msg/pose.hpp>
 #include <turtlesim/srv/set_pen.hpp>
 
-#define Kp      0.2
-#define ref_x   3.0
-#define ref_y   3.0
-
 // 時間リテラルを使えるようにする
 using namespace std::chrono_literals;
 
@@ -56,6 +52,9 @@ class Node_Class : public rclcpp::Node{
         rclcpp::Client<turtlesim::srv::SetPen>::SharedPtr client_setpen_;
         rclcpp::TimerBase::SharedPtr timer_pub;
         turtlesim::msg::Pose pose;
+        double Kp=0.2;
+        double ref_x=3.0;
+        double ref_y=3.0;
 
         // タイマー呼び出し関数（周期的にPublish）
         void timer_pub_callback(){

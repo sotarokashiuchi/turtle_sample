@@ -13,7 +13,7 @@ class Node_Class : public rclcpp::Node{
                 "turtle1/cmd_vel", 10
             );
 
-            // 1.5ms周期でtimer_pub_callbackを実行するタイマーを作成
+            // 500ms周期でtimer_pub_callbackを実行するタイマーを作成
             timer_pub = this->create_wall_timer(
                 500ms, std::bind(&Node_Class::timer_pub_callback, this)
             );
