@@ -123,6 +123,15 @@ ros2 run <パッケージ名> <ノード名>
 ```
 
 ## デバッグコマンド
+### launch関係
+```sh
+# launchの実行
+ros2 launch <package_name> <launch_file_name>
+
+# launchの実行(launchファイルが配置されたディレクトで実行)
+ros2 launch <launch_file_name>
+```
+
 ### Node関係
 ```sh
 # 起動しているNodeの確認
@@ -184,6 +193,12 @@ ros2 interface show <通信の型>　
 
 # 例
 ros2 interface show geometry_msgs/msg/Twist
+```
+
+### グラフ関係
+```sh
+# グラフの表示
+rqt_graph
 ```
 
 ## 参考
