@@ -7,8 +7,22 @@ endif()
 
 # find dependencies
 find_package(ament_cmake REQUIRED)
-find_package(rclcpp, REQUIRED)
-find_package(std_msgs REQUIRED)
+find_package(rclcpp REQUIRED)
+
+add_executable(turtle_executor src/turtle_executor.cpp)
+ament_target_dependencies(turtle_executor
+  rclcpp
+)
+
+install(TARGETS
+  turtle_executor
+  DESTINATION lib/${PROJECT_NAME}
+)
+
+install(DIRECTORY
+  launch
+  DESTINATION share/${PROJECT_NAME}/
+)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
