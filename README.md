@@ -181,7 +181,7 @@ colcon build
 source install/setup.bash
 
 # 実行
-ros2 run <パッケージ名> <ノード名>
+ros2 run <パッケージ名> <実行ファイル名>
 ```
 
 ## デバッグコマンド
