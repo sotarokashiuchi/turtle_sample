@@ -10,24 +10,41 @@ class Node_Class : public rclcpp::Node{
     public:
         // コンストラクタ
         Node_Class(const std::string &name) : Node(name){
-            // 500ms周期でtimer_pub_callbackを実行するタイマーを作成
-            timer_pub = this->create_wall_timer(
-                1s, std::bind(&Node_Class::timer_pub_callback, this)
+            // どちらか片方のコメントを削除
+            // callback_group = create_callback_group(rclcpp::CallbackGroupType::MutuallyExclusive);
+            // callback_group = create_callback_group(rclcpp::CallbackGroupType::Reentrant);
+
+            timer_pub1 = this->create_wall_timer(
+                1s, std::bind(&Node_Class::timer_pub_callback1, this), callback_group
+            );
+
+            timer_pub2 = this->create_wall_timer(
+                3s, std::bind(&Node_Class::timer_pub_callback2, this), callback_group
             );
         }
     
     private:
         // メンバ変数の定義
-        rclcpp::TimerBase::SharedPtr timer_pub;
+        rclcpp::TimerBase::SharedPtr timer_pub1;
+        rclcpp::TimerBase::SharedPtr timer_pub2;
+        rclcpp::CallbackGroup::SharedPtr callback_group;
 
-        // タイマー呼び出し関数（周期的にPublish）
-        void timer_pub_callback(){
-            // Publishするメッセージを作成
+        void timer_pub_callback1(){
             auto start = std::chrono::steady_clock::now();
             RCLCPP_INFO(this->get_logger(), "Start");
 
-            // 2秒間CPUを使う重い処理
             sleep_for(800ms);
+
+            auto end = std::chrono::steady_clock::now();
+            auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+            RCLCPP_INFO(this->get_logger(), "End (elapsed: %ld ms)", elapsed);
+        }
+
+        void timer_pub_callback2(){
+            auto start = std::chrono::steady_clock::now();
+            RCLCPP_INFO(this->get_logger(), "Start");
+
+            sleep_for(2000ms);
 
             auto end = std::chrono::steady_clock::now();
             auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();

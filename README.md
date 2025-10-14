@@ -385,3 +385,19 @@ uint8 off
 ```sh
 ros2 run <パッケージ名> <ノード実行ファイル名> --ros-args -p <パラメータ名>:=<値>
 ```
+
+## 5.launch
+
+## 6.executor
+![](./_attachments/sample_executor1.drawio.svg)
+- node1のみを扱う場合を考える
+- コールバック関数1(cb1)は1sごとに800msの処理を行う
+- コールバック関数2(cb2)は3sごとに200msの処理を行う
+- ここで、executorのタイプが`MultiThreadedExecutor`かつコールバックグループのタイプが`Reentrant`ならば2つ目の図のように並列処理される
+- それ以外の場合は3つ目の図になる
+
+![](./_attachments/sample_executor2.drawio.svg)
+- node1とnode2を扱う場合を考える
+- executorのタイプが`MultiThreadedExecutor`かつコールバックグループのタイプが`Reentrant`ならば2つ目の図のように並列処理される
+- executorのタイプが`MultiThreadedExecutor`かつコールバックグループのタイプが`Mutually exclusive`ならば3つ目の図のように並列処理される
+- それ以外の場合は4つ目の図のようになる
