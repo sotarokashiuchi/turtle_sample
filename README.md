@@ -257,10 +257,28 @@ ros2 interface show <通信の型>　
 ros2 interface show geometry_msgs/msg/Twist
 ```
 
-### グラフ関係
+### rqt関係
 ```sh
-# グラフの表示
+# rqtの表示
+rqt
+
+# プラグインを入れることで使えるようになる
+rqt_action
+rqt_bag
+rqt_bag_plugins
+rqt_console
 rqt_graph
+rqt_image_view
+rqt_msg
+rqt_plot
+rqt_publisher
+rqt_py_common
+rqt_py_console
+rqt_reconfigure
+rqt_service_caller
+rqt_shell
+rqt_srv
+rqt_topic
 ```
 
 ## 参考
@@ -401,3 +419,9 @@ ros2 run <パッケージ名> <ノード実行ファイル名> --ros-args -p <�
 - executorのタイプが`MultiThreadedExecutor`かつコールバックグループのタイプが`Reentrant`ならば2つ目の図のように並列処理される
 - executorのタイプが`MultiThreadedExecutor`かつコールバックグループのタイプが`Mutually exclusive`ならば3つ目の図のように並列処理される
 - それ以外の場合は4つ目の図のようになる
+
+
+Q clientはmainから初期化時以外にも使えるのか？resultには何が入っているのか？
+kp, ref_xはpractice側のパラメータで、node内部の変数に結び付けることが可能
+
+https://zenn.dev/uedake/articles/ros2_collection
