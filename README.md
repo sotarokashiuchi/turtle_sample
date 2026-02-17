@@ -425,3 +425,7 @@ Q clientはmainから初期化時以外にも使えるのか？resultには何�
 kp, ref_xはpractice側のパラメータで、node内部の変数に結び付けることが可能
 
 https://zenn.dev/uedake/articles/ros2_collection
+
+# 応用編
+## direnvを用いてsourceを自動実行
+- https://github.com/direnv/direnv
