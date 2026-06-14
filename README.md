@@ -281,6 +281,20 @@ rqt_srv
 rqt_topic
 ```
 
+### rosbag関係
+```sh
+# 複数トピックを記録
+ros2 bag record --topics /imu/data_raw /imu/mag
+# 全トピックを記録
+ros2 bag record -a
+
+# bagfileの情報を表示
+ros2 bag info
+
+# bagfileを再生
+ros2 bag play <bag_file>
+```
+
 ## 参考
 - https://docs.ros.org/en/foxy/Tutorials.html
 - https://docs.ros.org/en/foxy/index.html
